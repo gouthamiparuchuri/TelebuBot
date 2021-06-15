@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BotService } from '../services/bot.service';
+import { domain } from 'process';
 
 @Component({
   selector: 'app-intent',
@@ -9,6 +10,8 @@ import { BotService } from '../services/bot.service';
 export class IntentComponent implements OnInit {
   @Input() node: any;
   @Input() type: string;
+  nodeTitle: any;
+  nodeType: string;
   nlu: any;
   nluIndex: number;
   templateText: string;
@@ -20,6 +23,9 @@ export class IntentComponent implements OnInit {
 
   ngOnChanges(): void {
     console.log(this.type, this.node)
+    this.nodeTitle = this.node.title
+    if(this.node.target.length > 0)
+      this.nodeType = this._bot.botData.stories["conversation path1"][this.node.target[0] - 1].type
     this.targets = []
     if(this.type == 'intent'){
       this._bot.botData.nlu.forEach((nlu, index) => {
@@ -47,12 +53,25 @@ export class IntentComponent implements OnInit {
     this.nlu.push('')
   }
 
+  deleteNlu(index: number): void{
+    if(confirm('Are you sure to delete')){
+      this.nlu.splice(index, 1)
+    }
+  }
+
   closeIntent(): void {
     this.closeEvent.emit()
   }
 
-  saveNluData(): void {
-    this._bot.botData.nlu[this.nluIndex][this.node.title] = this.nlu
+  saveData(): void {
+    this.nodeTitle = this.nodeTitle.trim()
+    this._bot.botData.domain.intents.splice(this._bot.botData.domain.intents.indexOf(this.node.title), 1);
+    this._bot.botData.domain.intents.push(this.nodeTitle)
+    this._bot.botData.stories["conversation path1"][this.node.id - 1].title = this.nodeTitle
+    this._bot.botData.stories["conversation path1"][this.node.id - 1].label = this.nodeTitle
+    this._bot.botData.nlu.splice(this.nluIndex, 1)
+    this._bot.botData.nlu.push({[this.nodeTitle]: this.nlu})
+    console.log(this._bot.botData, "lll")
     this.closeEvent.emit()
   }
   newButton(): void {

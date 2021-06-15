@@ -1,4 +1,6 @@
 <!-- <ngx-flowchart [data]="flowData" [options]="flowOptions" (clickName)="showIntentData($event)"></ngx-flowchart> -->
+
+<app-intent *ngIf="showIntent" [node]="node" [type]="type" (closeEvent)="showIntent = false"></app-intent>
 <ngx-graph
   class="chart-container"
   [view]="[1000, 1500]"
@@ -63,6 +65,5 @@
 </ngx-graph>
 
 <div>save changes</div>
+<div>New</div>
 <div>cancel</div>
-
-<app-intent *ngIf="showIntent" [node]="node" [type]="type" (closeEvent)="showIntent = false"></app-intent>
