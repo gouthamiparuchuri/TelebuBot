@@ -11,6 +11,7 @@
     <span (click)="saveNluData()">Save</span>
 </ng-container>
 <ng-template #elseTemplate>
+    <!-- leave this start -->
     <input type="text" name="" id="" [(ngModel)]="templateText">
     <span>Buttons:</span>
     <span *ngIf="templateButtons">
@@ -22,7 +23,7 @@
     </span>
     <span (click)="newButton()">New</span>
     <span (click)="saveButtonData()">Save</span>
-
+<!-- leave this end -->
 
 </ng-template>
 <div>
@@ -35,11 +36,11 @@
     </div>
     <div>title:</div>
     <input type="tel" name="" id="" value="please select">
-    <div *ngFor="let item of ['target1', 'target2']">
-        <input type="text" name="" id="" value="item">
+    <div *ngFor="let target of targets">
+        <input type="text" name="" id="" [value]="target.title">
         <span>delete</span>
     </div>
-        
+
     <span>New</span>
     <span>Save</span>
 </div>

@@ -13,12 +13,14 @@ export class IntentComponent implements OnInit {
   nluIndex: number;
   templateText: string;
   templateButtons: any;
+  targets: any;
   @Output() closeEvent = new EventEmitter();
 
   constructor(private _bot: BotService) { }
 
   ngOnChanges(): void {
-    console.log(this.type, this.node.title)
+    console.log(this.type, this.node)
+    this.targets = []
     if(this.type == 'intent'){
       this._bot.botData.nlu.forEach((nlu, index) => {
         if(Object.keys(nlu)[0] == this.node.title){
@@ -30,6 +32,12 @@ export class IntentComponent implements OnInit {
     }else {
       this.templateText = this._bot.botData.domain.templates['utter_' + this.node.title][0].text
       this.templateButtons = this._bot.botData.domain.templates['utter_' + this.node.title][0].buttons
+    }
+    if(this.node.target.length > 0){
+      this.node.target.forEach(target => {
+        let node = this._bot.botData.stories["conversation path1"][target - 1]
+        this.targets.push(node)
+      })
     }
   }
   ngOnInit(): void {

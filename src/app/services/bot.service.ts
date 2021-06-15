@@ -26,12 +26,6 @@ export class BotService {
                     "nlu": [{
                         "start": ["hey", "hello", "hi", "good morning", "good evening", "hey there"]
                     }, {
-                        "goodbye": ["bye", "goodbye", "see you around", "see you later"]
-                    }, {
-                        "affirm": ["yes", "indeed", "of course", "that sounds good", "correct"]
-                    }, {
-                        "deny": ["no", "never", "I don't think so", "don't like that", "no way", "not really"]
-                    }, {
                         "service_conversation": ["service related"]
                     }, {
                         "payroll_conversation": ["payroll related"]
@@ -127,7 +121,7 @@ export class BotService {
                         
                     },
                     "domain": {
-                        "intents": ["start", "goodbye", "mood_affirm", "mood_deny", "service_conversation", "payroll_conversation", "mobile_conversation", "aadhar_conversation", "increment_conversation", "bills_conversation"],
+                        "intents": ["start", "service_conversation", "payroll_conversation", "mobile_conversation", "aadhar_conversation", "increment_conversation", "bills_conversation"],
                         "actions": ["utter_greet", "utter_serviceorpayroll", "utter_mobileoraadhar", "utter_questions", "utter_goodbye", "utter_thankyou", "utter_end", "utter_increment", "utter_paybills", "utter_updateMobile", "utter_updateAadhar"],
                         "entities": ["group"],
                         "slots": {
