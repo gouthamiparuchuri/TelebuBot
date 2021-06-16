@@ -37,20 +37,22 @@
     </div>
 
     <div *ngIf="nodeType == 'response'" >
-        <span>Title:</span>
-        <input type="tel" name="" id="" value="please select">
+        <div>
+            <span>Title:</span>
+            <input type="tel" name="" id="" value="please select">
+        </div>
         <div *ngFor="let target of targets">
             <input type="text" name="" id="" [value]="target.title">
             <span class="m-1 btn btn-danger">delete</span>
         </div>
-        <span class="m-1 btn btn-primary">New</span>
+        <div class="m-1 btn btn-primary">New</div>
     </div>
     <div *ngIf="nodeType == 'intent'" >
-        <input type="tel" name="" id="" value="">
+        <input type="tel" name="" id="" [(ngModel)]="nextIntent">
     </div>
 
     <div *ngIf="nodeType == 'text'" >
-        <input type="tel" name="" id="" value="">
+        <input type="tel" name="" id="" [(ngModel)]="nextText">
     </div>
 
 </div>

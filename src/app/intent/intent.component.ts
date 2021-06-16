@@ -17,6 +17,8 @@ export class IntentComponent implements OnInit {
   templateText: string;
   templateButtons: any;
   targets: any;
+  nextIntent: string;
+  nextText: string;
   @Output() closeEvent = new EventEmitter();
 
   constructor(private _bot: BotService) { }
@@ -24,37 +26,42 @@ export class IntentComponent implements OnInit {
   ngOnChanges(): void {
     console.log(this.type, this.node)
     this.nodeTitle = this.node.title
-    if(this.node.target.length > 0)
-      this.nodeType = this._bot.botData.stories["conversation path1"][this.node.target[0] - 1].type
+    this.nodeType = this.node.target.length > 0 ? this._bot.botData.stories["conversation path1"][this.node.target[0] - 1].type : ''
     this.targets = []
-    if(this.type == 'intent'){
+    this.nextText = ''
+    this.nextIntent = ''
+    if (this.type == 'intent') {
       this._bot.botData.nlu.forEach((nlu, index) => {
-        if(Object.keys(nlu)[0] == this.node.title){
+        if (Object.keys(nlu)[0] == this.node.title) {
           this.nluIndex = index;
           this.nlu = Object.values(nlu)[0]
           this.nlu = [...this.nlu]
         }
       })
-    }else {
-      this.templateText = this._bot.botData.domain.templates['utter_' + this.node.title][0].text
-      this.templateButtons = this._bot.botData.domain.templates['utter_' + this.node.title][0].buttons
-    }
-    if(this.node.target.length > 0){
-      this.node.target.forEach(target => {
+    } 
+    // else {
+      // this.templateText = this._bot.botData.domain.templates['utter_' + this.node.title][0].text
+      // this.templateButtons = this._bot.botData.domain.templates['utter_' + this.node.title][0].buttons
+    // }
+    this.node.target.forEach(target => {
+      if(this.nodeType == 'response'){
         let node = this._bot.botData.stories["conversation path1"][target - 1]
         this.targets.push(node)
-      })
-    }
+      }else if(this.nodeType == 'intent')
+        this.nextIntent = this._bot.botData.stories["conversation path1"][target - 1].title
+      else if(this.nodeType == 'text')
+        this.nextText = this._bot.botData.stories["conversation path1"][target - 1].title
+    })
   }
   ngOnInit(): void {
-    
+
   }
   newNlu(): void {
     this.nlu.push('')
   }
 
-  deleteNlu(index: number): void{
-    if(confirm('Are you sure to delete')){
+  deleteNlu(index: number): void {
+    if (confirm('Are you sure to delete')) {
       this.nlu.splice(index, 1)
     }
   }
@@ -70,7 +77,7 @@ export class IntentComponent implements OnInit {
     this._bot.botData.stories["conversation path1"][this.node.id - 1].title = this.nodeTitle
     this._bot.botData.stories["conversation path1"][this.node.id - 1].label = this.nodeTitle
     this._bot.botData.nlu.splice(this.nluIndex, 1)
-    this._bot.botData.nlu.push({[this.nodeTitle]: this.nlu})
+    this._bot.botData.nlu.push({ [this.nodeTitle]: this.nlu })
     console.log(this._bot.botData, "lll")
     this.closeEvent.emit()
   }
