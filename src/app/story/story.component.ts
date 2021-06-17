@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgxFlowChatOptions, NgxFlowChatData } from 'ngx-flowchart'
 import { BotService } from '../services/bot.service';
 import { Layout } from '@swimlane/ngx-graph';
 import { DagreNodesOnlyLayout } from './customDagreNodeOnly';
 import * as shape from 'd3-shape';
+import { Subscription, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-story',
@@ -21,7 +22,7 @@ export class StoryComponent implements OnInit {
   public layout: Layout = new DagreNodesOnlyLayout();
   // intentData: any[] = ['hello', 'hi', 'ok', 'bye'];  
 
-  constructor(private _bot: BotService) { }
+  constructor(private _bot: BotService, private _cd: ChangeDetectorRef) { }
   flowData: NgxFlowChatData[] = [
     {
       id: "1",
@@ -75,12 +76,13 @@ export class StoryComponent implements OnInit {
       //   childNodeIds: ['c1', 'c2']
       // }
     ]
-
+  botData$: Subscription
   ngOnInit() {
     this.nodes = [];
     this.edges = [];
-    this._bot.getBotData().then(data => {
-      this.nodes = data.stories['conversation path1']
+    this.botData$ = this._bot.getBotData().subscribe(data => {
+      console.log(data, "hhhhh")
+      this.nodes = [...data.stories['conversation path1']]
       this.nodes.forEach((node, i) => {
         node.target.forEach((target, j) => {
           let edge = {
@@ -88,13 +90,17 @@ export class StoryComponent implements OnInit {
             source: node.id,
             target: target,
           }
-          this.edges.push(edge)
-      })
-      
+          this.edges.push({...edge})
+        })
+
       })
 
       console.log(this.nodes, this.edges)
+      // this.nodes = [...this.nodes]
+      // this.edges = [...this.edges]
     })
+    this._bot.getBot()
+    
     // this._bot.botData.stories[this.story].forEach((data, index) => {
     //   let node = {
     //     id: data.title,
@@ -118,6 +124,11 @@ export class StoryComponent implements OnInit {
     this.showIntent = true;
     this.node = node;
     this.type = node.type
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.botData$.unsubscribe()
   }
 
 }

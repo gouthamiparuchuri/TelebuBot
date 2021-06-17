@@ -32,27 +32,27 @@
 
         <input type="radio" name="nodeType" id="" [checked]="nodeType == 'response'" (change)="nodeType = 'response'" >Send Options
 
-        <input type="radio" name="nodeType" id="" [checked]="nodeType == 'text'" (change)="nodeType = 'text'" > Response
+        <input type="radio" name="nodeType" id="" [checked]="nodeType == 'text'" (change)="nodeType = 'text'" >Send Response
 
     </div>
 
     <div *ngIf="nodeType == 'response'" >
         <div>
             <span>Title:</span>
-            <input type="tel" name="" id="" value="please select">
+            <input type="text" name="" id="" value="please select">
         </div>
-        <div *ngFor="let target of targets">
-            <input type="text" name="" id="" [value]="target.title">
-            <span class="m-1 btn btn-danger">delete</span>
+        <div *ngFor="let response of responses;let i=index">
+            <input type="text" name="" id="" [value]="response.title">
+            <span class="m-1 btn btn-danger" (click)="deleteResponse(i)">delete</span>
         </div>
-        <div class="m-1 btn btn-primary">New</div>
+        <div class="m-1 btn btn-primary" (click)="newResponse()">New</div>
     </div>
     <div *ngIf="nodeType == 'intent'" >
-        <input type="tel" name="" id="" [(ngModel)]="nextIntent">
+        <input type="text" name="" id="" [(ngModel)]="nextIntent" [readonly]="!isEndNode">
     </div>
 
     <div *ngIf="nodeType == 'text'" >
-        <input type="tel" name="" id="" [(ngModel)]="nextText">
+        <input type="text" name="" id="" [(ngModel)]="nextText" [readonly]="!isEndNode">
     </div>
 
 </div>
