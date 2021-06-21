@@ -9,6 +9,7 @@ import { Subject, Observable } from 'rxjs';
 })
 
 export class BotService {
+    currentBotData: any;
     botData: any;
     private _botData$: Subject<any> = new Subject<any>();
 
@@ -33,102 +34,129 @@ export class BotService {
             "nlu": [{
                 "start": ["hey", "hello", "hi", "good morning", "good evening", "hey there"]
             }, {
-                "service_conversation": ["service related"]
+                "Service_Register_Related": ["Service Register Related"]
             }, {
-                "payroll_conversation": ["payroll related"]
+                "Payroll_Related": ["payroll Related"]
             }, {
-                "mobile_conversation": ["update mobile number"]
+                "Update_Mobile_Number_in_SR": ["Update Mobile Number in SR"]
             }, {
-                "aadhar_conversation": ["updaate aadhar number"]
+                "How_to_update_aadhar_number_in_SR?": ["How to update aadhar number in SR?"]
             }, {
-                "increment_conversation": ["time bond increment"]
+                "How_to_generate_time_bond__Increment": ["How_to_generate_time_bond__Increment"]
             }, {
-                "bills_conversation": ["pay bills"]
+                "Paybill_not_validate_issues_while_pushing_the_bills?": ["Paybill not validate issues while pushing the bills?"]
             }],
             "stories": {
-                "conversation path1": [{
-                    "label": "start",
-                    "title": "start",
-                    "type": "intent",
-                    "id": 1,
-                    "target": [2, 3]
-                }, {
-                    "label": "Service Register Related",
-                    "title": "Service Register Related",
-                    "type": "response",
-                    "id": 2,
-                    "target": [4, 5]
-                }, {
-                    "label": "Payroll Related",
-                    "title": "Payroll Related",
-                    "type": "response",
-                    "id": 3,
-                    "target": [8, 12]
-                }, {
-                    "label": "Update Mobile Number in SR",
-                    "title": "Update Mobile Number in SR",
-                    "type": "response",
-                    "id": 4,
-                    "target": [6]
-                }, {
-                    "label": "How to update aadhar number in SR?",
-                    "title": "How to update aadhar number in SR?",
-                    "type": "response",
-                    "id": 5,
-                    "target": [7]
-                }, {
-                    "label": "IN Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number",
-                    "title": "IN Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number",
-                    "type": "text",
-                    "id": 6,
-                    "target": []
-                }, {
-                    "label": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line",
-                    "title": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line",
-                    "type": "text",
-                    "id": 7,
-                    "target": []
-                }, {
-                    "label": "How to generate time bond  Increment",
-                    "title": "How to generate time bond  Increment",
-                    "type": "response",
-                    "id": 8,
-                    "target": [9]
-                }, {
-                    "label": "DDO has to insert the TB record",
-                    "title": "DDO has to insert the TB record",
-                    "type": "text",
-                    "id": 9,
-                    "target": [10]
-                }, {
-                    "label": "the record will go for HOD appraisal",
-                    "title": "the record will go for HOD appraisal",
-                    "type": "text",
-                    "id": 10,
-                    "target": [11]
-                }, {
-                    "label": "After that DDO has to generate the *** using screen arrears - Generate arrears",
-                    "title": "After that DDO has to generate the *** using screen arrears - Generate arrears",
-                    "type": "text",
-                    "id": 11,
-                    "target": []
-                }, {
-                    "label": "Paybill not validate issues while pushing the bills?",
-                    "title": "Paybill not validate issues while pushing the bills?",
-                    "type": "response",
-                    "id": 12,
-                    "target": [13]
-                }, {
-                    "label": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest.",
-                    "title": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest.",
-                    "type": "text",
-                    "id": 13,
-                    "target": []
-                }]
+                "conversation path1": {
+                    1: {
+                        "label": "start",
+                        "title": "start",
+                        "type": "intent",
+                        "id": 1,
+                        "target": [2, 3],
+                        "parentNode": 0
+                    },
+                    2: {
+                        "label": "Service Register Related",
+                        "title": "Service_Register_Related",
+                        "type": "response",
+                        "id": 2,
+                        "target": [4, 5],
+                        "parentNode": 1
+                    },
+                    3: {
+                        "label": "Payroll Related",
+                        "title": "Payroll_Related",
+                        "type": "response",
+                        "id": 3,
+                        "target": [8, 12],
+                        "parentNode": 1
+                    },
+                    4: {
+                        "label": "Update Mobile Number in SR",
+                        "title": "Update_Mobile_Number_in_SR",
+                        "type": "response",
+                        "id": 4,
+                        "target": [6],
+                        "parentNode": 2
+                    },
+                    5: {
+                        "label": "How to update aadhar number in SR?",
+                        "title": "How_to_update_aadhar_number_in_SR?",
+                        "type": "response",
+                        "id": 5,
+                        "target": [7],
+                        "parentNode": 2
+                    },
+                    6: {
+                        "label": "IN Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number",
+                        "title": "IN_Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number",
+                        "type": "text",
+                        "id": 6,
+                        "target": [],
+                        "parentNode": 4
+                    },
+                    7: {
+                        "label": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line",
+                        "title": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line",
+                        "type": "text",
+                        "id": 7,
+                        "target": [],
+                        "parentNode": 5
+                    },
+                    8: {
+                        "label": "How to generate time bond  Increment",
+                        "title": "How_to_generate_time_bond__Increment",
+                        "type": "response",
+                        "id": 8,
+                        "target": [9],
+                        "parentNode": 3
+                    },
+                    9: {
+                        "label": "DDO has to insert the TB record",
+                        "title": "DDO has to insert the TB record",
+                        "type": "text",
+                        "id": 9,
+                        "target": [10],
+                        "parentNode": 8
+                    },
+                    10: {
+                        "label": "the record will go for HOD appraisal",
+                        "title": "the record will go for HOD appraisal",
+                        "type": "text",
+                        "id": 10,
+                        "target": [11],
+                        "parentNode": 9
+                    },
+                    11: {
+                        "label": "After that DDO has to generate the *** using screen arrears - Generate arrears",
+                        "title": "After that DDO has to generate the *** using screen arrears - Generate arrears",
+                        "type": "text",
+                        "id": 11,
+                        "target": [],
+                        "parentNode": 10
+                    },
+                    12: {
+                        "label": "Paybill not validate issues while pushing the bills?",
+                        "title": "Paybill_not_validate_issues_while_pushing_the_bills?",
+                        "type": "response",
+                        "id": 12,
+                        "target": [13],
+                        "parentNode": 3
+                    },
+                    13: {
+                        "label": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest.",
+                        "title": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest.",
+                        "type": "text",
+                        "id": 13,
+                        "target": [],
+                        "parentNode": 12
+                    }
+                }
 
             },
             "domain": {
-                "intents": ["start", "service_conversation", "payroll_conversation", "mobile_conversation", "aadhar_conversation", "increment_conversation", "bills_conversation"],
+                "intents": ["start", "Paybill_not_validate_issues_while_pushing_the_bills?", "How_to_generate_time_bond__Increment", "Service_Register_Related", "Payroll_Related", "Update_Mobile_Number_in_SR", "How_to_update_aadhar_number_in_SR?"],
                 "actions": ["utter_greet", "utter_1", "utter_2", "utter_3", "utter_4", "utter_5", "utter_8", "utter_9", "utter_10", "utter_12", "utter_goodbye", "utter_thankyou", "utter_end"],
                 "entities": ["group"],
                 "slots": {
@@ -141,30 +169,36 @@ export class BotService {
                         "text": "Please select ",
                         "buttons": [{
                             "title": "Service Register Related",
-                            "payload": "/service_conversation{\"group\":\"service\"}"
+                            "payload": "/service_conversation{\"group\":\"service\"}",
+                            "id": 2
                         }, {
                             "title": "Payroll related",
-                            "payload": "/Payroll_conversation{\"group\":\"Payroll\"}"
+                            "payload": "/Payroll_conversation{\"group\":\"Payroll\"}",
+                            "id": 3
                         }]
                     }],
                     "utter_2": [{
                         "text": "",
                         "buttons": [{
                             "title": "Update Mobile Number in SR",
-                            "payload": "/mobile_conversation{\"group\":\"mobile\"}"
+                            "payload": "/mobile_conversation{\"group\":\"mobile\"}",
+                            "id": 4
                         }, {
                             "title": "How to update aadhar number in SR?",
-                            "payload": "/aadhar_conversation{\"group\":\"aadhar\"}"
+                            "payload": "/aadhar_conversation{\"group\":\"aadhar\"}",
+                            "id": 5
                         }]
                     }],
                     "utter_3": [{
                         "text": "",
                         "buttons": [{
                             "title": "How to generate time bond  Increment",
-                            "payload": "/increment_conversation{\"group\":\"increment\"}"
+                            "payload": "/increment_conversation{\"group\":\"increment\"}",
+                            "id": 8
                         }, {
                             "title": "Paybill not validate issues while pushing the bills?",
-                            "payload": "/bills_conversation{\"group\":\"paybill\"}"
+                            "payload": "/bills_conversation{\"group\":\"paybill\"}",
+                            "id": 12
                         }]
                     }],
                     "utter_4": [{
@@ -206,7 +240,8 @@ export class BotService {
                 }
             }
         }
-        this.botData = res;
+        this.currentBotData = { ...res };
+        this.botData = { ...res };
         this.setBotData(res)
         //     },error => {
         //     console.warn("error at getting bots", error)

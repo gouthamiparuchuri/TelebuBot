@@ -1,60 +1,52 @@
-<div class="btn btn-secondary" (click)="closeIntent()">close</div>
-<div class="mt-4">
-    <span>Title: </span>
-    <input type="text" name="" id="" [(ngModel)]="nodeTitle">
-</div>
-<div *ngIf="type == 'intent'" class="mt-4">
-    <div *ngFor="let intent of nlu; let i = index;trackBy: trackByFn">
-        <input type="text" [(ngModel)]="nlu[i]">
-        <span class="m-1 btn btn-danger" (click)="deleteNlu(i)">delete</span>
+<div class="overlay">
+<div class="mainDiv">
+    <div class="btn btn-secondary btnClose" (click)="closeIntent()">x</div>
+    <div class="overflowDiv">
+    <div class="mt-4">
+        <span>Title: </span>
+        <input class="formfield" type="text" [(ngModel)]="nodeTitle">
     </div>
-    <span class="m-1 btn btn-primary" (click)="newNlu()">New</span>
-</div>
-<!-- <ng-template #elseTemplate>
-    <input type="text" name="" id="" [(ngModel)]="templateText">
-    <span>Buttons:</span>
-    <span *ngIf="templateButtons">
-        <div *ngFor="let button of templateButtons; let i = index;trackBy: trackByFn">
-            <input type="text" [(ngModel)]="templateButtons[i].title">
-            <span>delete</span>
-        </div> -->
-<!-- <button *ngFor="let button of template.buttons">{{button.title}}</button> -->
-<!-- </span>
-    <span (click)="newButton()">New</span>
-    <span (click)="saveButtonData()">Save</span>
-
-</ng-template> -->
-<div class="mt-2">
-    <div>Next Node:</div>
-    <div>
-
-        <input type="radio" name="nodeType" id="" [checked]="nodeType == 'intent'" (change)="nodeType = 'intent'" >User Input
-
-        <input type="radio" name="nodeType" id="" [checked]="nodeType == 'response'" (change)="nodeType = 'response'" >Send Options
-
-        <input type="radio" name="nodeType" id="" [checked]="nodeType == 'text'" (change)="nodeType = 'text'" >Send Response
-
-    </div>
-
-    <div *ngIf="nodeType == 'response'" >
-        <div>
-            <span>Title:</span>
-            <input type="text" name="" id="" value="please select">
+    <div *ngIf="type == 'intent'" class="mt-4">
+        <div><b>User Inputs:</b></div>
+        <div *ngFor="let intent of nlu; let i = index;trackBy: trackByFn">
+            <input class="formfield" type="text" [(ngModel)]="nlu[i]">
+            <span class="m-1 btn btn-danger" (click)="deleteNlu(i)" title="Delete">x</span>
         </div>
-        <div *ngFor="let response of responses;let i=index">
-            <input type="text" name="" id="" [value]="response.title">
-            <span class="m-1 btn btn-danger" (click)="deleteResponse(i)">delete</span>
-        </div>
-        <div class="m-1 btn btn-primary" (click)="newResponse()">New</div>
+        <div style="text-align:left"><span class="m-1 btn btn-primary" (click)="newNlu()">New</span></div>
     </div>
-    <div *ngIf="nodeType == 'intent'" >
-        <input type="text" name="" id="" [(ngModel)]="nextIntent" [readonly]="!isEndNode">
+    <br>
+    <div class="mt-2">
+        <div><b>Next Node:</b></div>
+        <div style="margin-top:10px">
+            <span style="margin-right:10px"><input style="margin-right:4px;" type="radio" name="nodeType"
+                    [checked]="nodeType == 'intent'" (change)="changeNodeType('intent')">User Input</span>
+            <span style="margin-right:10px"><input style="margin-right:4px;" type="radio" name="nodeType"
+                    [checked]="nodeType == 'response'" (change)="changeNodeType('response')">Options</span>
+            <span style="margin-right:10px"><input style="margin-right:4px;" type="radio" name="nodeType"
+                    [checked]="nodeType == 'text'" (change)="changeNodeType('text')">Response</span>
+        </div>
+
+        <div *ngIf="nodeType == 'response'">
+            <div style="margin: 10px 0;">
+                <span>Title: </span>
+                <input class="formfield" type="text" [(ngModel)]="nextResponse.text">
+            </div>
+            <div *ngFor="let button of nextResponse.buttons;let i=index">
+                <input class="formfield" type="text" [(ngModel)]="button.title" [readonly]="button.id != 0">
+                <span class="m-1 btn btn-danger" (click)="deleteButton(i)" title="Delete">x</span>
+            </div>
+            <div class="m-1 btn btn-primary" (click)="newButton()">New</div>
+        </div>
+        <div *ngIf="nodeType == 'intent'">
+            <input class="formfield" type="text" [(ngModel)]="nextIntent" [readonly]="!isEndNode">
+        </div>
+        <div *ngIf="nodeType == 'text'">
+            <input class="formfield" type="text" [(ngModel)]="nextText" [readonly]="!isEndNode">
+        </div>
+        <div *ngIf="nodeType != ''" class="m-1 btn btn-danger" (click)="deleteNode()">Delete Node</div>
     </div>
 
-    <div *ngIf="nodeType == 'text'" >
-        <input type="text" name="" id="" [(ngModel)]="nextText" [readonly]="!isEndNode">
-    </div>
+    <div style="text-align:center"><span class="m-1 btn btn-success" (click)="saveData()">Save</span></div>
+</div></div>
 
 </div>
-
-<span class="m-1 btn btn-success" (click)="saveData()">Save</span>

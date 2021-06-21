@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgxFlowchartModule } from 'ngx-flowchart';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IntentComponent } from './intent/intent.component';
@@ -21,7 +20,6 @@ import { StoryComponent } from './story/story.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgxFlowchartModule,
     BrowserAnimationsModule,
     NgxGraphModule,
     FormsModule,

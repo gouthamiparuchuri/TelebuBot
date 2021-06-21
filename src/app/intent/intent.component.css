@@ -1,0 +1,29 @@
+.mainDiv{
+    width:500px;
+    margin: 20px auto;
+    border-radius: 4px;
+    position: relative;
+    background-color: #fff;
+}
+.overflowDiv{
+    height: 96vh;
+    overflow: auto;padding: 20px;
+}
+.btnClose{
+    position: absolute;
+    right: -12px;
+    top: -14px;
+    padding: 0px 8px;
+}
+.formfield{
+    border: 1px solid #afafaf;
+    border-radius: 4px;
+    height: 38px;
+    vertical-align: middle;padding: 5px;
+}
+.overlay{
+    position: fixed;
+    background-color: rgb(0 0 0 / 79%);
+    width: 100%;
+    z-index: 9;
+}

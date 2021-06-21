@@ -23,8 +23,8 @@
     "@swimlane/ngx-graph": "^7.2.0",
     "bootstrap": "^5.0.1",
     "jquery": "^3.6.0",
-    "ngx-flowchart": "0.0.5",
     "ngx-toastr": "^14.0.0",
+    "ngx-tooltip": "0.0.9",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

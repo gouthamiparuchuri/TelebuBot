@@ -1,10 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { NgxFlowChatOptions, NgxFlowChatData } from 'ngx-flowchart'
+import { Component, OnInit } from '@angular/core';
 import { BotService } from '../services/bot.service';
 import { Layout } from '@swimlane/ngx-graph';
 import { DagreNodesOnlyLayout } from './customDagreNodeOnly';
 import * as shape from 'd3-shape';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { sampleBot } from '../constant/sampleBbot';
+import { HttpService } from '../services/http.service';
+import { constantApis } from '../constant/constantapis';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-story',
@@ -20,52 +23,8 @@ export class StoryComponent implements OnInit {
   };
   public curve: any = shape.curveLinear;
   public layout: Layout = new DagreNodesOnlyLayout();
-  // intentData: any[] = ['hello', 'hi', 'ok', 'bye'];  
 
-  constructor(private _bot: BotService, private _cd: ChangeDetectorRef) { }
-  flowData: NgxFlowChatData[] = [
-    {
-      id: "1",
-      name: "Group1",
-      groupData: [{
-        id: "2",
-        name: "Flow1",
-      },
-      {
-        id: "2",
-        name: "Flow1",
-      }]
-    },
-    {
-      id: "3",
-      name: "Flow2",
-    },
-    {
-      id: "4",
-      name: "Group2",
-      groupData: [{
-        id: "5",
-        name: "Flow3",
-      },
-      {
-        id: "6",
-        name: "Flow4",
-      }]
-    },
-  ];
-
-  flowOptions: NgxFlowChatOptions = {
-    groupBackground: 'linear-gradient(to bottom,#b9b9b9 0,#fefefe 50%)',
-    groupShadow: '0 0.3rem 0.5rem 0 rgba(44,51,73,.5)',
-    groupBorderRadius: '3px',
-    groupTextColor: '#000',
-    background: '#0e3e7d',
-    shadow: '0 2px 4px 0 #333',
-    borderRadius: '5px',
-    textColor: '#fff',
-    width: '200px'
-  };
-
+  constructor(private _bot: BotService, private _http: HttpService, private _toastr: ToastrService) { }
   nodes: any[];
   edges: any[];
   clusters =
@@ -78,11 +37,12 @@ export class StoryComponent implements OnInit {
     ]
   botData$: Subscription
   ngOnInit() {
-    this.nodes = [];
-    this.edges = [];
     this.botData$ = this._bot.getBotData().subscribe(data => {
-      console.log(data, "hhhhh")
-      this.nodes = [...data.stories['conversation path1']]
+      this.nodes = [];
+      this.edges = [];
+      for (const key in data.stories['conversation path1']) {
+        this.nodes.push(data.stories['conversation path1'][key])
+      }
       this.nodes.forEach((node, i) => {
         node.target.forEach((target, j) => {
           let edge = {
@@ -90,33 +50,11 @@ export class StoryComponent implements OnInit {
             source: node.id,
             target: target,
           }
-          this.edges.push({...edge})
+          this.edges.push({ ...edge })
         })
-
       })
-
-      console.log(this.nodes, this.edges)
-      // this.nodes = [...this.nodes]
-      // this.edges = [...this.edges]
     })
     this._bot.getBot()
-    
-    // this._bot.botData.stories[this.story].forEach((data, index) => {
-    //   let node = {
-    //     id: data.title,
-    //     type: data.type,
-    //     label: data.title
-    //   }
-    //   this.nodes.push(node)
-    //   if(this._bot.botData.stories[this.story].length > index + 1){
-    //     let edge = {
-    //       id: data.title,
-    //       source: data.title,
-    //       target: this._bot.botData.stories[this.story][index + 1].title,
-    //     }
-    //     this.edges.push(edge)
-    //   }
-    // });    
   }
 
 
@@ -125,9 +63,28 @@ export class StoryComponent implements OnInit {
     this.node = node;
     this.type = node.type
   }
+  saveBot(): void {
+    this._bot.currentBotData = this._bot.botData;
+    this._http.loginCall(constantApis.saveBot, 'post', this._bot.botData).subscribe(response => {  
+    },error => {
+      console.warn("error at getting bots", error)
+      this._toastr.info("something went wrong")
+    })
+  }
+  cancelBot(): void {
+    if (confirm('Changes will be not saved.')) {
+      console.log(this._bot.botData, this._bot.currentBotData)
+      this._bot.botData = this._bot.currentBotData;
+      this._bot.setBotData(this._bot.botData)
+    }
+  }
+  newBot(): void {
+    if (confirm('Creating a new BOT deletes existing BOT. Are you sure to create new one?')) {
+      this._bot.botData = sampleBot
+      this._bot.setBotData(this._bot.botData)
+    }
+  }
   ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
     this.botData$.unsubscribe()
   }
 
