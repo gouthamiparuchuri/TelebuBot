@@ -24,17 +24,19 @@ export class IntentComponent implements OnInit {
   isEndNode: boolean;
   nextNodeChange: boolean;
   @Output() closeEvent = new EventEmitter();
+  botData: any;
 
   constructor(private _bot: BotService, private _toastr: ToastrService) { }
 
   ngOnChanges(): void {
+    this.botData = {...this._bot.botData}
     this.node = { ...this.storyNode }
     this.nextNodeChange = false;
     this.deletedNodes = []
     this.nodeTitle = this.node.label
     let target = this.node.target
     if (target.length > 0) {
-      this.nodeType = this._bot.botData.stories["conversation path1"][target[0]].type
+      this.nodeType = this.botData.stories["conversation path1"][target[0]].type
       this.isEndNode = false;
     } else {
       this.nodeType = ''
@@ -44,7 +46,7 @@ export class IntentComponent implements OnInit {
     this.nextText = ''
     this.nextIntent = ''
     if (this.type != 'text') {
-      this._bot.botData.nlu.forEach((nlu, index) => {
+      this.botData.nlu.forEach((nlu, index) => {
         if (Object.keys(nlu)[0] == this.node.title) {
           this.nluIndex = index;
           if (this.type == 'intent') {
@@ -55,11 +57,11 @@ export class IntentComponent implements OnInit {
       })
     }
     if (this.nodeType == 'response')
-      this.nextResponse = { ...this._bot.botData.domain.templates['utter_' + this.node.id][0] }
+      this.nextResponse = { ...this.botData.domain.templates['utter_' + this.node.id][0] }
     else if (this.nodeType == 'intent')
-      this.nextIntent = this._bot.botData.stories["conversation path1"][target[0]].label
+      this.nextIntent = this.botData.stories["conversation path1"][target[0]].label
     else if (this.nodeType == 'text')
-      this.nextText = this._bot.botData.stories["conversation path1"][target[0]].label
+      this.nextText = this.botData.stories["conversation path1"][target[0]].label
   }
   ngOnInit(): void {
 
@@ -115,21 +117,21 @@ export class IntentComponent implements OnInit {
   deleteNodes(nodesIds: number[]): void {
     let subNodes = []
     nodesIds.forEach(nodeId => {
-      let node = this._bot.botData.stories["conversation path1"][nodeId]
+      let node = this.botData.stories["conversation path1"][nodeId]
       if (node.type != 'text') {
-        this._bot.botData.nlu.forEach((nlu, index) => {
+        this.botData.nlu.forEach((nlu, index) => {
           if (Object.keys(nlu)[0] == node.title)
-            this._bot.botData.nlu.splice(index, 1);
+            this.botData.nlu.splice(index, 1);
         })
-        this._bot.botData.domain.intents.splice(this._bot.botData.domain.intents.indexOf(node.title), 1);
+        this.botData.domain.intents.splice(this.botData.domain.intents.indexOf(node.title), 1);
       }
       if (node.type != 'intent') {
-        delete this._bot.botData.domain.templates['utter_' + node.id]
-        this._bot.botData.domain.actions.splice(this._bot.botData.domain.actions.indexOf('utter_' + node.id), 1);
+        delete this.botData.domain.templates['utter_' + node.id]
+        this.botData.domain.actions.splice(this.botData.domain.actions.indexOf('utter_' + node.id), 1);
       }
-      if (typeof this._bot.botData.stories["conversation path1"][node.parentNode] != 'undefined')
-        this._bot.botData.stories["conversation path1"][node.parentNode].target.splice(this._bot.botData.stories["conversation path1"][node.parentNode].target.indexOf(nodeId), 1);
-      delete this._bot.botData.stories["conversation path1"][nodeId]
+      if (typeof this.botData.stories["conversation path1"][node.parentNode] != 'undefined')
+        this.botData.stories["conversation path1"][node.parentNode].target.splice(this.botData.stories["conversation path1"][node.parentNode].target.indexOf(nodeId), 1);
+      delete this.botData.stories["conversation path1"][nodeId]
       subNodes.push(...node.target)
     })
     if (subNodes.length > 0)
@@ -168,29 +170,29 @@ export class IntentComponent implements OnInit {
       let label = this.nodeTitle.replace(/ /g, '_')
       let isValid: boolean = true;
       if (this.node.type != 'text') {
-        this._bot.botData.nlu.splice(this.nluIndex, 1)
+        this.botData.nlu.splice(this.nluIndex, 1)
         let nlu = this.node.type == 'intent' ? this.nlu : [this.nodeTitle]
-        this._bot.botData.nlu.push({ [label]: nlu })
-        this._bot.botData.domain.intents.splice(this._bot.botData.domain.intents.indexOf(this.node.title), 1);
-        this._bot.botData.domain.intents.push(label)
+        this.botData.nlu.push({ [label]: nlu })
+        this.botData.domain.intents.splice(this.botData.domain.intents.indexOf(this.node.title), 1);
+        this.botData.domain.intents.push(label)
       }
       if (this.node.type == 'response') {
-        this._bot.botData.domain.templates['utter_' + this.node.parentNode][0].buttons.forEach((button, index) => {
+        this.botData.domain.templates['utter_' + this.node.parentNode][0].buttons.forEach((button, index) => {
           if (button.id == this.node.id)
-            this._bot.botData.domain.templates['utter_' + this.node.parentNode][0].buttons[index].title = this.nodeTitle
+            this.botData.domain.templates['utter_' + this.node.parentNode][0].buttons[index].title = this.nodeTitle
         })
       }
       if (this.node.type == 'text')
-        this._bot.botData.domain.templates['utter_' + this.node.parentNode].text = this.nodeTitle
-      this._bot.botData.stories["conversation path1"][this.node.id].title = label
-      this._bot.botData.stories["conversation path1"][this.node.id].label = this.nodeTitle
+        this.botData.domain.templates['utter_' + this.node.parentNode].text = this.nodeTitle
+      this.botData.stories["conversation path1"][this.node.id].title = label
+      this.botData.stories["conversation path1"][this.node.id].label = this.nodeTitle
       if (this.nextNodeChange) {
         if (this.nodeType == 'intent') {
           this.nextIntent = this.nextIntent.trim()
           if (this.nextIntent != '') {
             let title = this.nextIntent.replace(/ /g, '_')
-            let id = +Object.keys(this._bot.botData.stories["conversation path1"]).pop() + 1
-            this._bot.botData.stories["conversation path1"][id] = {
+            let id = +Object.keys(this.botData.stories["conversation path1"]).pop() + 1
+            this.botData.stories["conversation path1"][id] = {
               "label": this.nextIntent,
               "title": title,
               "type": "intent",
@@ -198,9 +200,9 @@ export class IntentComponent implements OnInit {
               "target": [],
               "parentNode": this.node.id
             }
-            this._bot.botData.nlu.push({ [title]: [this.nextIntent] })
-            this._bot.botData.domain.intents.push(title)
-            this._bot.botData.stories["conversation path1"][this.node.id].target.push(id)
+            this.botData.nlu.push({ [title]: [this.nextIntent] })
+            this.botData.domain.intents.push(title)
+            this.botData.stories["conversation path1"][this.node.id].target.push(id)
           } else {
             isValid = false
             this._toastr.info('Next node user input cannot be empty, Please add or Delete the node')
@@ -220,8 +222,8 @@ export class IntentComponent implements OnInit {
               if(button.id == 0){
                 button.title = button.title.trim()
                 let title = button.title.replace(/ /g, '_')
-                let id = +Object.keys(this._bot.botData.stories["conversation path1"]).pop() + 1
-                this._bot.botData.stories["conversation path1"][id] = {
+                let id = +Object.keys(this.botData.stories["conversation path1"]).pop() + 1
+                this.botData.stories["conversation path1"][id] = {
                   "label": button.title,
                   "title": title,
                   "type": "response",
@@ -230,22 +232,22 @@ export class IntentComponent implements OnInit {
                   "parentNode": this.node.id
                 }
                 this.nextResponse.buttons[index].id = id
-                this._bot.botData.nlu.push({ [title]: [button.title] })
-                this._bot.botData.domain.intents.push(title)
-                this._bot.botData.stories["conversation path1"][this.node.id].target.push(id)
+                this.botData.nlu.push({ [title]: [button.title] })
+                this.botData.domain.intents.push(title)
+                this.botData.stories["conversation path1"][this.node.id].target.push(id)
               }else{
                 isNew = false 
               }
             });
             if(isNew)
-              this._bot.botData.domain.actions.push("utter_" + this.node.id)
-            this._bot.botData.domain.templates["utter_" + this.node.id] = [this.nextResponse]
+              this.botData.domain.actions.push("utter_" + this.node.id)
+            this.botData.domain.templates["utter_" + this.node.id] = [this.nextResponse]
           }
         } else if (this.nodeType == 'text') {
           this.nextText = this.nextText.trim()
           if (this.nextText != '') {
-            let id = +Object.keys(this._bot.botData.stories["conversation path1"]).pop() + 1
-            this._bot.botData.stories["conversation path1"][id] = {
+            let id = +Object.keys(this.botData.stories["conversation path1"]).pop() + 1
+            this.botData.stories["conversation path1"][id] = {
               "label": this.nextText,
               "title": this.nextText.replace(/ /g, '_'),
               "type": "text",
@@ -253,9 +255,9 @@ export class IntentComponent implements OnInit {
               "target": [],
               "parentNode": this.node.id
             }
-            this._bot.botData.domain.actions.push("utter_" + this.node.id)
-            this._bot.botData.stories["conversation path1"][this.node.id].target.push(id)
-            this._bot.botData.domain.templates["utter_" + this.node.id] = [{
+            this.botData.domain.actions.push("utter_" + this.node.id)
+            this.botData.stories["conversation path1"][this.node.id].target.push(id)
+            this.botData.domain.templates["utter_" + this.node.id] = [{
               "text": this.nextText
             }]
           } else {
@@ -266,7 +268,8 @@ export class IntentComponent implements OnInit {
       }
       if (isValid) {
         this.deleteNodes(this.deletedNodes)
-        this._bot.setBotData(this._bot.botData)
+        this._bot.botData = {...this.botData}
+        this._bot.setBotData(this.botData)
         this.closeEvent.emit()
       }
     } else {

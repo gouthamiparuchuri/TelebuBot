@@ -1,5 +1,7 @@
+import { environment } from 'src/environments/environment';
+
 export const sampleBot = {
-    "_id": "",
+    "_id": environment.botId,
     "name": "",
     "port": "5007",
     "createdAt": "",
@@ -19,27 +21,14 @@ export const sampleBot = {
     },
     "domain": {
         "intents": ["start"],
-        "actions": ["utter_greet"],
+        "actions": [],
         "entities": ["group"],
         "slots": {
             "group": {
                 "type": "text"
             }
         },
-        "templates": {
-            "utter_serviceorpayroll": [{
-                "text": "Please select ",
-                "buttons": [{
-                    "title": "Service related",
-                    "payload": "/service_conversation{\"group\":\"service\"}"
-                }, {
-                    "title": "Payroll related",
-                    "payload": "/Payroll_conversation{\"group\":\"Payroll\"}"
-                }]
-            }],
-            "utter_greet": [{
-                "text": "Hello!!"
-            }]
+        "templates": {           
         }
     }
 }

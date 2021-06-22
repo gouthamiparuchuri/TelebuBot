@@ -4,7 +4,7 @@ import { Layout } from '@swimlane/ngx-graph';
 import { DagreNodesOnlyLayout } from './customDagreNodeOnly';
 import * as shape from 'd3-shape';
 import { Subscription } from 'rxjs';
-import { sampleBot } from '../constant/sampleBbot';
+import { sampleBot } from '../constant/sampleBot';
 import { HttpService } from '../services/http.service';
 import { constantApis } from '../constant/constantapis';
 import { ToastrService } from 'ngx-toastr';
@@ -25,8 +25,8 @@ export class StoryComponent implements OnInit {
   public layout: Layout = new DagreNodesOnlyLayout();
 
   constructor(private _bot: BotService, private _http: HttpService, private _toastr: ToastrService) { }
-  nodes: any[];
-  edges: any[];
+  nodes: any[] = [];
+  edges: any[] = [];
   clusters =
     [
       // {
@@ -53,6 +53,8 @@ export class StoryComponent implements OnInit {
           this.edges.push({ ...edge })
         })
       })
+      this.nodes = [...this.nodes]
+      this.edges = [...this.edges]
     })
     this._bot.getBot()
   }
@@ -64,7 +66,7 @@ export class StoryComponent implements OnInit {
     this.type = node.type
   }
   saveBot(): void {
-    this._bot.currentBotData = this._bot.botData;
+    this._bot.botData.botId = this._bot.botData._id
     this._http.loginCall(constantApis.saveBot, 'post', this._bot.botData).subscribe(response => {  
     },error => {
       console.warn("error at getting bots", error)
@@ -73,9 +75,7 @@ export class StoryComponent implements OnInit {
   }
   cancelBot(): void {
     if (confirm('Changes will be not saved.')) {
-      console.log(this._bot.botData, this._bot.currentBotData)
-      this._bot.botData = this._bot.currentBotData;
-      this._bot.setBotData(this._bot.botData)
+      this._bot.getBot()
     }
   }
   newBot(): void {
