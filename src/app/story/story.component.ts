@@ -68,6 +68,7 @@ export class StoryComponent implements OnInit {
   saveBot(): void {
     this._bot.botData.botId = this._bot.botData._id
     this._http.loginCall(constantApis.saveBot, 'post', this._bot.botData).subscribe(response => {  
+      this._toastr.info('BOT changes saved successfully')
     },error => {
       console.warn("error at getting bots", error)
       this._toastr.info("something went wrong")

@@ -1,5 +1,5 @@
-// var url = "http://localhost:4200/";
-var url = "http://13.126.229.27:4200/"
+var url = "http://localhost:4200/";
+// var url = "http://13.126.229.27:4200/"
 var _args = {};
 var TelebuBot = TelebuBot || (function () {
 
