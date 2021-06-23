@@ -8,6 +8,7 @@ import { sampleBot } from '../constant/sampleBot';
 import { HttpService } from '../services/http.service';
 import { constantApis } from '../constant/constantapis';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-story',
@@ -24,7 +25,7 @@ export class StoryComponent implements OnInit {
   public curve: any = shape.curveLinear;
   public layout: Layout = new DagreNodesOnlyLayout();
 
-  constructor(private _bot: BotService, private _http: HttpService, private _toastr: ToastrService) { }
+  constructor(private _route: ActivatedRoute, private _bot: BotService, private _http: HttpService, private _toastr: ToastrService) { }
   nodes: any[] = [];
   edges: any[] = [];
   clusters =
@@ -37,6 +38,7 @@ export class StoryComponent implements OnInit {
     ]
   botData$: Subscription
   ngOnInit() {
+    this._bot.botId = this._route.snapshot.paramMap.get('id');
     this.botData$ = this._bot.getBotData().subscribe(data => {
       this.nodes = [];
       this.edges = [];
@@ -82,6 +84,7 @@ export class StoryComponent implements OnInit {
   newBot(): void {
     if (confirm('Creating a new BOT deletes existing BOT. Are you sure to create new one?')) {
       this._bot.botData = sampleBot
+      this._bot.botData._id = this._bot.botId
       this._bot.setBotData(this._bot.botData)
     }
   }

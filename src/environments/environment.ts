@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   // url: 'http://192.168.75.88:3000',
   url: 'http://13.126.229.27:3325',
-  // botId: '60c0a02a7f527776c4aa80e1'
-  botId: '60d0d1ad6b8c805a8a4756d6'
+  // botId: '60c0a02a7f527776c4aa80e1' local
+  // botId: '60d0d1ad6b8c805a8a4756d6' staging
 };
 
 /*

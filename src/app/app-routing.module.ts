@@ -3,9 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { StoryComponent } from './story/story.component';
 
 const routes: Routes = [
-  { path: 'story', component: StoryComponent },
-  { path: '', component: StoryComponent },
-  { path: '*', component: StoryComponent }
+  { path: 'story/:id', component: StoryComponent }
 ];
 
 @NgModule({

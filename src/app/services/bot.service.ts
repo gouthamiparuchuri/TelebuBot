@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 
 export class BotService {
     botData: any;
+    botId: string;
     private _botData$: Subject<any> = new Subject<any>();
 
     constructor(private _http: HttpService, private _toastr: ToastrService) { }
@@ -22,7 +23,7 @@ export class BotService {
         return this._botData$.asObservable();
     }
     getBot(): void {
-        this._http.loginCall(constantApis.getBots + environment.botId, 'get', {}).subscribe(res => {
+        this._http.loginCall(constantApis.getBots + this.botId, 'get', {}).subscribe(res => {
             this.botData = { ...res };
             this.setBotData(res)
         }, error => {

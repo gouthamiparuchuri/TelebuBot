@@ -1,7 +1,7 @@
 import { environment } from 'src/environments/environment';
 
 export const sampleBot = {
-    "_id": environment.botId,
+    "_id": "",
     "name": "",
     "port": "5007",
     "createdAt": "",

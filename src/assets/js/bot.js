@@ -5,9 +5,9 @@ var TelebuBot = TelebuBot || (function () {
 
   return {
     load: function (Args) {
-      // if (Args) {
-      //   _args = Args;
-      //   if (_args.length > 0) {
+      if (Args) {
+        _args = Args;
+        if (_args.length > 0) {
           var g = document.createElement("link")
           g.setAttribute("rel", "stylesheet")
           g.setAttribute("type", "text/css")
@@ -20,7 +20,7 @@ var TelebuBot = TelebuBot || (function () {
           // var host = window.location.hostname;
           // if ((localStorage.getItem("h") != null) && (localStorage.getItem("h") != "")) { a = ""; }
           // else if ((localStorage.getItem("AEname") != null) && (localStorage.getItem("AEname") != "")) { a = ""; }
-          var e = url + "story";
+          var e = url + "story/" + _args[0];
           var chatContent = '<div id="TelebuPOP_frame"><iframe src="' + e + '" id="pop_frame" name="pop_frame" width="100%" height="100%" border="0"></iframe></div>';
           // chatContent = chatContent + '<div id="TelebuChat-icon" class="iconBlock"><div id="telebu-pop-notify" class="notification animated fadeInRight"><table class="message" style="height:100%;"><tr><td id="telebu-welcomemsg"></td></tr></table></div>   <div class="chatIcon" ><div class="iconDots animated zoomIn"><span>...</span></div><div class="iconCount animated zoomIn" style="display:none">2</div><div class="iconClose animated rotateIn" style="display:none"><img src="' + url + '/assets/images/close-blue.png" alt="close-blue" /></div></div></div>';
           var f = document.createElement("div");
@@ -60,11 +60,11 @@ var TelebuBot = TelebuBot || (function () {
 
           // });
           // window.addEventListener("message", receiveMessage, false);
-    //     }
-    //     else { console.log("App Id is missing"); }
+        }
+        else { console.log("Bot Id is missing"); }
 
-    //   }
-    //   else { console.log("App Id is missing"); }
+      }
+      else { console.log("Bot Id is missing"); }
     }
 
   };
