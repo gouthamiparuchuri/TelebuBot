@@ -42,8 +42,8 @@ export class StoryComponent implements OnInit {
     this.botData$ = this._bot.getBotData().subscribe(data => {
       this.nodes = [];
       this.edges = [];
-      for (const key in data.stories['conversation path1']) {
-        this.nodes.push(data.stories['conversation path1'][key])
+      for (const key in data.story) {
+        this.nodes.push(data.story[key])
       }
       this.nodes.forEach((node, i) => {
         node.target.forEach((target, j) => {
@@ -67,8 +67,22 @@ export class StoryComponent implements OnInit {
     this.node = node;
     this.type = node.type
   }
+  createStory(endNode: number, story): void {
+    let node = this._bot.botData.story[endNode]
+    this._bot.botData.stories['conversation path' + story].unshift(node)
+    if(node.parentNode != 0)
+      this.createStory(node.parentNode, story)
+  }
   saveBot(): void {
     this._bot.botData.botId = this._bot.botData._id
+    let story = 1
+    for (const nodeId in this._bot.botData.story) {
+      if(this._bot.botData.story[nodeId].target.length == 0){
+        this._bot.botData.stories['conversation path' + story] = []
+        this.createStory(+nodeId, story)
+        story ++;
+      }
+    }
     this._http.loginCall(constantApis.saveBot, 'post', this._bot.botData).subscribe(response => {  
       this._toastr.info('BOT changes saved successfully')
     },error => {

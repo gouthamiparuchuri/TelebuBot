@@ -1,5 +1,3 @@
-import { environment } from 'src/environments/environment';
-
 export const sampleBot = {
     "_id": "",
     "name": "",
@@ -10,14 +8,17 @@ export const sampleBot = {
     "nlu": [{
         "start": ["hey", "hello", "hi", "good morning", "good evening", "hey there"]
     }],
-    "stories": {
-        "conversation path1": [{
+    "stories": {      
+    },
+    "story": {
+        1: {
             "label": "start",
             "title": "start",
             "type": "intent",
-            "id":  1,
-            "target": []
-        }]    
+            "id": 1,
+            "target": [2, 3],
+            "parentNode": 0
+        }
     },
     "domain": {
         "intents": ["start"],
