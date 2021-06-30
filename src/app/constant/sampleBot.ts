@@ -29,7 +29,7 @@ export const sampleBot = {
                 "type": "text"
             }
         },
-        "templates": {           
+        "responses": {           
         }
     }
 }

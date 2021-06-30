@@ -69,7 +69,19 @@ export class StoryComponent implements OnInit {
   }
   createStory(endNode: number, story): void {
     let node = this._bot.botData.story[endNode]
-    this._bot.botData.stories['conversation path' + story].unshift(node)
+    if(node.target.length > 1){
+      this._bot.botData.stories['conversation path' + story].unshift({title: 'utter_' + node.id, type: 'response'})    
+    }
+    let type;
+    let title = node.title
+    if(node.type == 'text'){
+      type = 'response'
+      title = 'utter_' + node.parentNode
+    }else if(node.type == 'response')
+      type = 'intent'
+    else 
+      type = node.type
+    this._bot.botData.stories['conversation path' + story].unshift({title: title, type: type})    
     if(node.parentNode != 0)
       this.createStory(node.parentNode, story)
   }
@@ -83,6 +95,7 @@ export class StoryComponent implements OnInit {
         story ++;
       }
     }
+    // console.log(JSON.stringify(this._bot.botData))
     this._http.loginCall(constantApis.saveBot, 'post', this._bot.botData).subscribe(response => {  
       this._toastr.info('BOT changes saved successfully')
     },error => {
