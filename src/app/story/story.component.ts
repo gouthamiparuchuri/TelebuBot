@@ -81,6 +81,9 @@ export class StoryComponent implements OnInit {
       type = 'intent'
     else 
       type = node.type
+    if(type == 'intent'){
+      title = title + '{"group":"' + node.label + '"}'
+    }
     this._bot.botData.stories['conversation path' + story].unshift({title: title, type: type})    
     if(node.parentNode != 0)
       this.createStory(node.parentNode, story)
