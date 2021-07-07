@@ -87,24 +87,27 @@ export class StoryComponent implements OnInit {
     this._bot.botData.stories['conversation path' + story].unshift({title: title, type: type})    
     if(node.parentNode != 0)
       this.createStory(node.parentNode, story)
-  }
+     }
   saveBot(): void {
-    this._bot.botData.botId = this._bot.botData._id
-    let story = 1
-    for (const nodeId in this._bot.botData.story) {
-      if(this._bot.botData.story[nodeId].target.length == 0){
-        this._bot.botData.stories['conversation path' + story] = []
-        this.createStory(+nodeId, story)
-        story ++;
+    if (confirm('Do you want to save BOT?')) {
+      this._bot.botData.stories = {}
+      this._bot.botData.botId = this._bot.botData._id
+      let story = 1
+      for (const nodeId in this._bot.botData.story) {
+        if(this._bot.botData.story[nodeId].target.length == 0){
+          this._bot.botData.stories['conversation path' + story] = []
+          this.createStory(+nodeId, story)
+          story ++;
+        }
       }
+      // console.log(JSON.stringify(this._bot.botData))
+      this._http.loginCall(constantApis.saveBot, 'post', this._bot.botData).subscribe(response => {  
+        this._toastr.info('BOT changes saved successfully')
+      },error => {
+        console.warn("error at getting bots", error)
+        this._toastr.info("something went wrong")
+      })
     }
-    // console.log(JSON.stringify(this._bot.botData))
-    this._http.loginCall(constantApis.saveBot, 'post', this._bot.botData).subscribe(response => {  
-      this._toastr.info('BOT changes saved successfully')
-    },error => {
-      console.warn("error at getting bots", error)
-      this._toastr.info("something went wrong")
-    })
   }
   cancelBot(): void {
     if (confirm('Changes will be not saved.')) {
