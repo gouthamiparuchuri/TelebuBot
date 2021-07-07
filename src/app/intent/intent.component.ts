@@ -180,7 +180,7 @@ export class IntentComponent implements OnInit {
         this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons.forEach((button, index) => {
           if (button.id == this.node.id){
             this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons[index].title = this.nodeLabel
-            this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons[index].payload = '/' + title
+            this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons[index].payload = '/' + title + '{\"group\":\"' + this.nodeLabel + '\"}'
           }
         })
       }
@@ -233,7 +233,7 @@ export class IntentComponent implements OnInit {
                   "target": [],
                   "parentNode": this.node.id
                 }
-                this.nextResponse.buttons[index].payload = '/' + title
+                this.nextResponse.buttons[index].payload = '/' + title + '{\"group\":\"' + title + '\"}'
                 this.nextResponse.buttons[index].id = id
                 this.botData.nlu.push({ [title]: [button.title] })
                 this.botData.domain.intents.push(title)
@@ -243,8 +243,7 @@ export class IntentComponent implements OnInit {
               }
             });
             if(isNew)
-              this.botData.domain.actions.push("utter_" + this.node.id)
-            this.botData.domain.responses["utter_" + this.node.id] = [this.nextResponse]
+              this.botData.domain.actions.push("utter_" + this.node.id)            
           }
         } else if (this.nodeType == 'text') {
           this.nextText = this.nextText.trim()
@@ -269,6 +268,8 @@ export class IntentComponent implements OnInit {
           }
         }
       }
+      if(this.nodeType == 'response')
+        this.botData.domain.responses["utter_" + this.node.id] = [this.nextResponse]
       if (isValid) {
         this.deleteNodes(this.deletedNodes)
         this._bot.botData = {...this.botData}
