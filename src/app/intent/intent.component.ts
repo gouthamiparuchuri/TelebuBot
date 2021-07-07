@@ -233,7 +233,7 @@ export class IntentComponent implements OnInit {
                   "target": [],
                   "parentNode": this.node.id
                 }
-                this.nextResponse.buttons[index].payload = '/' + title + '{\"group\":\"' + title + '\"}'
+                this.nextResponse.buttons[index].payload = '/' + title + '{\"group\":\"' + button.title + '\"}'
                 this.nextResponse.buttons[index].id = id
                 this.botData.nlu.push({ [title]: [button.title] })
                 this.botData.domain.intents.push(title)

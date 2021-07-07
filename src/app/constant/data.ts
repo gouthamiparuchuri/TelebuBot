@@ -1,24 +1,132 @@
 let botData = {
-	"_id": "60c0a02a7f527776c4aa80e1",
+	"_id": "60ddf5e6bc1e9f0ca53c0421",
 	"name": "sampleBot1",
-	"port": "5007",
-	"createdAt": "2021-06-09T11:04:10.055Z",
-	"updatedAt": "2021-06-09T11:04:10.055Z",
-	"__v": 0,
+	"port": "5005",
+	"createdAt": "2021-07-01T17:05:42.433Z",
+	"updatedAt": "2021-07-07T11:40:23.169Z",
+	"__v": 14,
+	"domain": {
+		"intents": ["How_to_generate_time_bond__Increment", "Update_Mobile_Number_in_SR", "How_to_update_aadhar_number_in_SR?", "Service_Register_Related", "How_to_generate_time_bond_Increment", "Paybill_not_validate_issues_while_pushing_the_bills?", "start"],
+		"actions": ["utter_greet", "utter_1", "utter_2", "utter_3", "utter_4", "utter_5", "utter_8", "utter_9", "utter_10"],
+		"entities": ["group"],
+		"slots": {
+			"group": {
+				"type": "text"
+			}
+		},
+		"responses": {
+			"utter_1": [{
+				"text": "Please select",
+				"buttons": [{
+					"title": "Service Register Related",
+					"payload": "/Service_Register_Related{\"group\":\"Service Register Related\"}",
+					"id": 2
+				}, {
+					"title": "Payroll Related",
+					"payload": "/Payroll_Related{\"group\":\"Payroll Related\"}",
+					"id": 3
+				}]
+			}],
+			"utter_2": [{
+				"text": "",
+				"buttons": [{
+					"title": "Update Mobile Number in SR",
+					"payload": "/Update_Mobile_Number_in_SR{\"group\":\"Update Mobile Number in SR\"}",
+					"id": 4
+				}, {
+					"title": "How to update aadhar number in SR?",
+					"payload": "/How_to_update_aadhar_number_in_SR?{\"group\":\"How to update aadhar number in SR?\"}",
+					"id": 5
+				}]
+			}],
+			"utter_3": [{
+				"text": "",
+				"buttons": [{
+					"title": "How to generate time bond Increment",
+					"payload": "/How_to_generate_time_bond_Increment{\"group\":\"How to generate time bond Increment\"}",
+					"id": 8
+				}, {
+					"title": "Paybill not validate issues while pushing the bills?",
+					"payload": "/Paybill_not_validate_issues_while_pushing_the_bills?{\"group\":\"Paybill not validate issues while pushing the bills?\"}",
+					"id": 12
+				}]
+			}],
+			"utter_4": [{
+				"text": "IN Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number"
+			}],
+			"utter_5": [{
+				"text": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line"
+			}],
+			"utter_8": [{
+				"text": "DDO has to insert the TB record"
+			}],
+			"utter_9": [{
+				"text": "the record will go for HOD appraisal"
+			}],
+			"utter_10": [{
+				"text": "After that DDO has to generate the *** using screen arrears - Generate arrears"
+			}],
+			"utter_12": [{
+				"text": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest."
+			}],
+			"utter_end": [{
+				"custom": {
+					"status": "completed",
+					"text": "Bye"
+				}
+			}],
+			"utter_goodbye": [{
+				"text": "Bye"
+			}],
+			"utter_greet": [{
+				"text": "Hello!!"
+			}],
+			"utter_thankyou": [{
+				"text": "Thanks for visiting."
+			}],
+			"utter_submit": [{
+				"text": "All done!"
+			}],
+			"utter_7": [{
+				"text": "select",
+				"buttons": [{
+					"title": "opt 1",
+					"payload": "/opt_1{\"group\":\"opt_1\"}",
+					"id": 15
+				}, {
+					"title": "opt 2",
+					"payload": "/opt_2{\"group\":\"opt_2\"}",
+					"id": 16
+				}]
+			}],
+			"utter_6": [{
+				"text": "hey hi",
+				"buttons": [{
+					"title": "1 node",
+					"payload": "/1_node{\"group\":\"1 node\"}",
+					"id": 17
+				}, {
+					"title": "2 node",
+					"payload": "/2_node{\"group\":\"2 node\"}",
+					"id": 18
+				}]
+			}]
+		}
+	},
 	"nlu": [{
-		"start": ["hey", "hello", "hi", "good morning", "good evening", "hey there"]
-	}, {
-		"Service_Register_Related": ["Service Register Related"]
-	}, {
-		"Payroll_Related": ["payroll Related"]
-	}, {
 		"Update_Mobile_Number_in_SR": ["Update Mobile Number in SR"]
 	}, {
 		"How_to_update_aadhar_number_in_SR?": ["How to update aadhar number in SR?"]
 	}, {
-		"How_to_generate_time_bond__Increment": ["How_to_generate_time_bond__Increment"]
+		"Service_Register_Related": ["Service Register Related"]
+	}, {
+		"Payroll_Related": ["Payroll Related"]
+	}, {
+		"How_to_generate_time_bond_Increment": ["How to generate time bond Increment"]
 	}, {
 		"Paybill_not_validate_issues_while_pushing_the_bills?": ["Paybill not validate issues while pushing the bills?"]
+	}, {
+		"start": ["hey", "hello", "hi", "good morning", "good evening", "hey there"]
 	}],
 	"stories": {
 		"conversation path1": [{
@@ -72,7 +180,7 @@ let botData = {
 			"title": "utter_3",
 			"type": "response"
 		}, {
-			"title": "How_to_generate_time_bond__Increment",
+			"title": "How_to_generate_time_bond_Increment",
 			"type": "intent"
 		}, {
 			"title": "utter_8",
@@ -102,6 +210,81 @@ let botData = {
 		}, {
 			"title": "utter_12",
 			"type": "response"
+		}],
+		"conversation path5": [{
+			"title": "start",
+			"type": "intent"
+		}, {
+			"title": "utter_1",
+			"type": "response"
+		}, {
+			"title": "Service_Register_Related_2",
+			"type": "intent"
+		}, {
+			"title": "utter_2",
+			"type": "response"
+		}, {
+			"title": "How_to_update_aadhar_number_in_SR?",
+			"type": "intent"
+		}, {
+			"title": "utter_5",
+			"type": "response"
+		}, {
+			"title": "utter_7",
+			"type": "response"
+		}, {
+			"title": "opt_2",
+			"type": "intent"
+		}],
+		"conversation path6": [{
+			"title": "start",
+			"type": "intent"
+		}, {
+			"title": "utter_1",
+			"type": "response"
+		}, {
+			"title": "Service_Register_Related_2",
+			"type": "intent"
+		}, {
+			"title": "utter_2",
+			"type": "response"
+		}, {
+			"title": "Update_Mobile_Number_in_SR",
+			"type": "intent"
+		}, {
+			"title": "utter_4",
+			"type": "response"
+		}, {
+			"title": "utter_6",
+			"type": "response"
+		}, {
+			"title": "1_node",
+			"type": "intent"
+		}],
+		"conversation path7": [{
+			"title": "start",
+			"type": "intent"
+		}, {
+			"title": "utter_1",
+			"type": "response"
+		}, {
+			"title": "Service_Register_Related_2",
+			"type": "intent"
+		}, {
+			"title": "utter_2",
+			"type": "response"
+		}, {
+			"title": "Update_Mobile_Number_in_SR",
+			"type": "intent"
+		}, {
+			"title": "utter_4",
+			"type": "response"
+		}, {
+			"title": "utter_6",
+			"type": "response"
+		}, {
+			"title": "2_node",
+			"type": "intent"
 		}]
 	},
 	"story": {
@@ -222,7 +405,7 @@ let botData = {
 		},
 		"6": {
 			"label": "IN Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number",
-			"title": "IN Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number",
+			"title": "IN_Service_register_module_update_employe_basic_detail_submobile.By_using_this_screen_DDo_can_update_the_mobile_number",
 			"type": "text",
 			"id": 6,
 			"target": [],
@@ -245,7 +428,7 @@ let botData = {
 		},
 		"7": {
 			"label": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line",
-			"title": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line",
+			"title": "Download_the_mobile_app_by_using_the_webportal_line_provided_in_the_application_detailed_user_name_is_provided_in_below_line",
 			"type": "text",
 			"id": 7,
 			"target": [],
@@ -291,7 +474,7 @@ let botData = {
 		},
 		"9": {
 			"label": "DDO has to insert the TB record",
-			"title": "DDO has to insert the TB record",
+			"title": "DDO_has_to_insert_the_TB_record",
 			"type": "text",
 			"id": 9,
 			"target": [10],
@@ -314,7 +497,7 @@ let botData = {
 		},
 		"10": {
 			"label": "the record will go for HOD appraisal",
-			"title": "the record will go for HOD appraisal",
+			"title": "the_record_will_go_for_HOD_appraisal",
 			"type": "text",
 			"id": 10,
 			"target": [11],
@@ -337,7 +520,7 @@ let botData = {
 		},
 		"11": {
 			"label": "After that DDO has to generate the *** using screen arrears - Generate arrears",
-			"title": "After that DDO has to generate the *** using screen arrears - Generate arrears",
+			"title": "After_that_DDO_has_to_generate_the_***_using_screen_arrears_-_Generate_arrears",
 			"type": "text",
 			"id": 11,
 			"target": [],
@@ -383,7 +566,7 @@ let botData = {
 		},
 		"13": {
 			"label": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest.",
-			"title": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest.",
+			"title": "payroll_check_the_installment_cant_of_lines(GPF,KGID).the_cant_second_not_cross_40_for_principal_$8_for_interest.",
 			"type": "text",
 			"id": 13,
 			"target": [],
@@ -404,90 +587,5 @@ let botData = {
 			},
 			"transform": "translate(620, 470)"
 		}
-	},
-	"domain": {
-		"intents": ["start", "Paybill_not_validate_issues_while_pushing_the_bills?", "How_to_generate_time_bond__Increment", "Service_Register_Related", "Payroll_Related", "Update_Mobile_Number_in_SR", "How_to_update_aadhar_number_in_SR?"],
-		"actions": ["utter_greet", "utter_1", "utter_2", "utter_3", "utter_4", "utter_5", "utter_8", "utter_9", "utter_10", "utter_12", "utter_goodbye", "utter_thankyou", "utter_end"],
-		"entities": ["group"],
-		"slots": {
-			"group": {
-				"type": "text"
-			}
-		},
-		"responses": {
-			"utter_1": [{
-				"text": "Please select ",
-				"buttons": [{
-					"title": "Service Register Related",
-					"payload": "/Service_Register_Related",
-					"id": 2
-				}, {
-					"title": "Payroll related",
-					"payload": "/Payroll_Related",
-					"id": 3
-				}]
-			}],
-			"utter_2": [{
-				"text": "",
-				"buttons": [{
-					"title": "Update Mobile Number in SR",
-					"payload": "/Update_Mobile_Number_in_SR",
-					"id": 4
-				}, {
-					"title": "How to update aadhar number in SR?",
-					"payload": "/How_to_update_aadhar_number_in_SR?",
-					"id": 5
-				}]
-			}],
-			"utter_3": [{
-				"text": "",
-				"buttons": [{
-					"title": "How to generate time bond Increment",
-					"payload": "/How_to_generate_time_bond_Increment",
-					"id": 8
-				}, {
-					"title": "Paybill not validate issues while pushing the bills?",
-					"payload": "/Paybill_not_validate_issues_while_pushing_the_bills",
-					"id": 12
-				}]
-			}],
-			"utter_4": [{
-				"text": "IN Service register module update employe basic detail submobile.By using this screen DDo can update the mobile number"
-			}],
-			"utter_5": [{
-				"text": "Download the mobile app by using the webportal line provided in the application detailed user name is provided in below line"
-			}],
-			"utter_8": [{
-				"text": "DDO has to insert the TB record"
-			}],
-			"utter_9": [{
-				"text": "the record will go for HOD appraisal"
-			}],
-			"utter_10": [{
-				"text": "After that DDO has to generate the *** using screen arrears - Generate arrears"
-			}],
-			"utter_12": [{
-				"text": "payroll check the installment cant of lines(GPF,KGID).the cant second not cross 40 for principal $8 for interest."
-			}],
-			"utter_end": [{
-				"custom": {
-					"status": "completed",
-					"text": "Bye"
-				}
-			}],
-			"utter_goodbye": [{
-				"text": "Bye"
-			}],
-			"utter_greet": [{
-				"text": "Hello!!"
-			}],
-			"utter_thankyou": [{
-				"text": "Thanks for visiting."
-			}],
-			"utter_submit": [{
-				"text": "All done!"
-			}]
-		}
-	},
-	"botId": "60c0a02a7f527776c4aa80e1"
+	}
 }
