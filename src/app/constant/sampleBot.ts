@@ -8,7 +8,7 @@ export const sampleBot = {
     "nlu": [{
         "start": ["hey", "hello", "hi", "good morning", "good evening", "hey there"]
     }],
-    "stories": {      
+    "stories": {
     },
     "story": {
         1: {
@@ -22,14 +22,24 @@ export const sampleBot = {
     },
     "domain": {
         "intents": ["start"],
-        "actions": [],
+        "actions": ["utter_connect"],
         "entities": ["group"],
         "slots": {
             "group": {
                 "type": "text"
             }
         },
-        "responses": {           
+        "responses": {
+            "utter_connect": [
+                {
+                    "custom": [
+                        {
+                            "payload": "Endchat",
+                            "text": "Connecting to our Agent…"
+                        }
+                    ]
+                }
+            ]
         }
     }
 }

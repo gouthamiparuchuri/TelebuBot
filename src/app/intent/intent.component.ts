@@ -266,6 +266,17 @@ export class IntentComponent implements OnInit {
             isValid = false
             this._toastr.info('Next node Text cannot be empty, Please add or Delete the node')
           }
+        } else if(this.nodeType == 'connect'){
+          let id = +Object.keys(this.botData.story).pop() + 1
+            this.botData.story[id] = {
+              "label": "Connect To Our Agent",
+              "title": "Connect_To_Our_Agent",
+              "type": "connect",
+              "id": id,
+              "target": [],
+              "parentNode": this.node.id
+            }
+            this.botData.story[this.node.id].target.push(id)
         }
       }
       if(this.nodeType == 'response')

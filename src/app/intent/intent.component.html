@@ -4,7 +4,7 @@
     <div class="overflowDiv">
     <div class="mt-4">
         <span>Title: </span>
-        <input class="formfield" type="text" [(ngModel)]="nodeLabel">
+        <input class="formfield" type="text" [readonly]="node.type == 'connect'" [(ngModel)]="nodeLabel">
     </div>
     <div *ngIf="type == 'intent'" class="mt-4">
         <div><b>User Inputs:</b></div>
@@ -24,6 +24,8 @@
                     [checked]="nodeType == 'response'" (change)="changeNodeType('response')">Options</span>
             <span style="margin-right:10px"><input style="margin-right:4px;" type="radio" name="nodeType"
                     [checked]="nodeType == 'text'" (change)="changeNodeType('text')">Response</span>
+            <span style="margin-right:10px"><input style="margin-right:4px;" type="radio" name="nodeType"
+                [checked]="nodeType == 'connect'" (change)="changeNodeType('connect')">Connect to our Agent…</span>
         </div>
 
         <div *ngIf="nodeType == 'response'">
