@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { IntentComponent } from './intent/intent.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -22,6 +23,7 @@ import { StoryComponent } from './story/story.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     NgxGraphModule,
+    NgxChartsModule,
     FormsModule,
     HttpClientModule,
     ToastrModule.forRoot()

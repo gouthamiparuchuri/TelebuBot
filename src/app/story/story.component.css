@@ -17,4 +17,10 @@
     background: #fff;
     border-top: 1px solid #ddd;
 }
+ngx-graph {
+    pointer-events: none;
+}
+.node{
+  pointer-events: all
+}
 
