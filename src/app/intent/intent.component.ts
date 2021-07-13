@@ -151,6 +151,7 @@ export class IntentComponent implements OnInit {
   }
   deleteNode(): void {
     if (confirm('Are you sure to delete this node?')) {
+      this.isEndNode = true
       this.nodeType = ''
       this.deletedNodes = [...this.deletedNodes, ...this.node.target]
       this.node.target = []
