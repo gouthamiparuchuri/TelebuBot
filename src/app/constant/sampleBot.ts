@@ -22,7 +22,7 @@ export const sampleBot = {
     },
     "domain": {
         "intents": ["start"],
-        "actions": ["utter_connect"],
+        "actions": [],
         "entities": ["group"],
         "slots": {
             "group": {
@@ -30,16 +30,7 @@ export const sampleBot = {
             }
         },
         "responses": {
-            "utter_connect": [
-                {
-                    "custom": [
-                        {
-                            "payload": "Endchat",
-                            "text": "Connecting to our Agent…"
-                        }
-                    ]
-                }
-            ]
+           
         }
     }
 }
