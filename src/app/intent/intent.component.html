@@ -4,7 +4,7 @@
     <div class="overflowDiv">
     <div class="mt-4">
         <span>Title: </span>
-        <input class="formfield" type="text" [readonly]="node.type == 'connect'" [(ngModel)]="nodeLabel">
+        <input class="formfield" type="text" [(ngModel)]="nodeLabel">
     </div>
     <div *ngIf="type == 'intent'" class="mt-4">
         <div><b>User Inputs:</b></div>
@@ -44,6 +44,9 @@
         </div>
         <div *ngIf="nodeType == 'text'">
             <input class="formfield" type="text" [(ngModel)]="nextText" [readonly]="!isEndNode">
+        </div>
+        <div *ngIf="nodeType == 'connect'">
+            <input class="formfield" type="text" [(ngModel)]="nextConnect" [readonly]="!isEndNode">
         </div>
         <div *ngIf="nodeType != ''" class="m-1 btn btn-danger" (click)="deleteNode()">Delete Node</div>
     </div>

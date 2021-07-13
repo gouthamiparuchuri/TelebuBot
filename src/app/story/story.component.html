@@ -21,7 +21,7 @@
   <ng-template #nodeTemplate let-node>
     <svg:g class="node" (click)="showIntentData(node)" 
     ngx-tooltip
-    [tooltipPlacement]="'top'"
+    [tooltipPlacement]="'right'"
     [tooltipType]="'tooltip'"
     [tooltipTitle]="node.label">
       <svg:rect 

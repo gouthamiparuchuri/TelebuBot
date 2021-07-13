@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class IntentComponent implements OnInit {
   @Input() storyNode: any;
   @Input() type: string;
+  @Output() closeEvent = new EventEmitter();
   node: any;
   nodeLabel: any;
   nodeType: string;
@@ -23,13 +24,12 @@ export class IntentComponent implements OnInit {
   deletedNodes: number[];
   isEndNode: boolean;
   nextNodeChange: boolean;
-  @Output() closeEvent = new EventEmitter();
   botData: any;
-
+  nextConnect: string;
   constructor(private _bot: BotService, private _toastr: ToastrService) { }
 
   ngOnChanges(): void {
-    this.botData = {...this._bot.botData}
+    this.botData = { ...this._bot.botData }
     this.node = { ...this.storyNode }
     this.nextNodeChange = false;
     this.deletedNodes = []
@@ -45,6 +45,7 @@ export class IntentComponent implements OnInit {
     this.nextResponse = {}
     this.nextText = ''
     this.nextIntent = ''
+    this.nextConnect = ''
     if (this.type != 'text') {
       this.botData.nlu.forEach((nlu, index) => {
         if (Object.keys(nlu)[0] == this.node.title) {
@@ -62,6 +63,8 @@ export class IntentComponent implements OnInit {
       this.nextIntent = this.botData.story[target[0]].label
     else if (this.nodeType == 'text')
       this.nextText = this.botData.story[target[0]].label
+    else if (this.nodeType == 'connect')
+      this.nextConnect = this.botData.story[target[0]].label
   }
   ngOnInit(): void {
 
@@ -96,6 +99,7 @@ export class IntentComponent implements OnInit {
         this.nodeType = type
         this.nextIntent = ''
         this.nextText = ''
+        this.nextConnect = ''
         this.nextResponse = {}
         this.isEndNode = true
         this.deletedNodes = [...this.deletedNodes, ...this.node.target]
@@ -118,7 +122,7 @@ export class IntentComponent implements OnInit {
     let subNodes = []
     nodesIds.forEach(nodeId => {
       let node = this.botData.story[nodeId]
-      if (node.type != 'text') {
+      if (node.type != 'text' && node.type != 'connect') {
         this.botData.nlu.forEach((nlu, index) => {
           if (Object.keys(nlu)[0] == node.title)
             this.botData.nlu.splice(index, 1);
@@ -152,6 +156,7 @@ export class IntentComponent implements OnInit {
       this.node.target = []
       this.nextIntent = ''
       this.nextText = ''
+      this.nextConnect = ''
       this.nextResponse = {}
     }
   }
@@ -178,14 +183,16 @@ export class IntentComponent implements OnInit {
       }
       if (this.node.type == 'response') {
         this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons.forEach((button, index) => {
-          if (button.id == this.node.id){
+          if (button.id == this.node.id) {
             this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons[index].title = this.nodeLabel
             this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons[index].payload = '/' + title + '{\"group\":\"' + this.nodeLabel + '\"}'
           }
         })
       }
       if (this.node.type == 'text')
-        this.botData.domain.responses['utter_' + this.node.parentNode].text = this.nodeLabel
+        this.botData.domain.responses['utter_' + this.node.parentNode][0].text = this.nodeLabel
+      if (this.node.type == 'connect')
+        this.botData.domain.responses['utter_' + this.node.parentNode][0].custom.blocks[0].text = this.nodeLabel
       this.botData.story[this.node.id].title = title
       this.botData.story[this.node.id].label = this.nodeLabel
       if (this.nextNodeChange) {
@@ -221,7 +228,7 @@ export class IntentComponent implements OnInit {
           if (isValid) {
             let isNew = true
             this.nextResponse.buttons.forEach((button, index) => {
-              if(button.id == 0){
+              if (button.id == 0) {
                 button.title = button.title.trim()
                 let title = button.title.replace(/ /g, '_')
                 let id = +Object.keys(this.botData.story).pop() + 1
@@ -238,12 +245,12 @@ export class IntentComponent implements OnInit {
                 this.botData.nlu.push({ [title]: [button.title] })
                 this.botData.domain.intents.push(title)
                 this.botData.story[this.node.id].target.push(id)
-              }else{
-                isNew = false 
+              } else {
+                isNew = false
               }
             });
-            if(isNew)
-              this.botData.domain.actions.push("utter_" + this.node.id)            
+            if (isNew)
+              this.botData.domain.actions.push("utter_" + this.node.id)
           }
         } else if (this.nodeType == 'text') {
           this.nextText = this.nextText.trim()
@@ -266,24 +273,44 @@ export class IntentComponent implements OnInit {
             isValid = false
             this._toastr.info('Next node Text cannot be empty, Please add or Delete the node')
           }
-        } else if(this.nodeType == 'connect'){
-          let id = +Object.keys(this.botData.story).pop() + 1
+        } else if (this.nodeType == 'connect') {
+          this.nextConnect = this.nextConnect.trim()
+          if (this.nextConnect != '') {
+            let id = +Object.keys(this.botData.story).pop() + 1
             this.botData.story[id] = {
-              "label": "Connect To Our Agent",
-              "title": "Connect_To_Our_Agent",
+              "label": this.nextConnect,
+              "title": this.nextConnect.replace(/ /g, '_'),
               "type": "connect",
               "id": id,
               "target": [],
               "parentNode": this.node.id
             }
             this.botData.story[this.node.id].target.push(id)
+            this.botData.domain.actions.push("utter_" + this.node.id)
+            this.botData.domain.responses["utter_" + this.node.id] = [
+              {
+                "custom": {
+                  "blocks": [
+                    {
+                      "payload": "Endchat",
+                      "text": this.nextConnect
+                    }
+                  ]
+                }
+              }
+            ]
+          } else {
+            isValid = false
+            this._toastr.info('Next node Connect to our Agent… text cannot be empty, Please add or Delete the node')
+          }
+
         }
       }
-      if(this.nodeType == 'response')
+      if (this.nodeType == 'response')
         this.botData.domain.responses["utter_" + this.node.id] = [this.nextResponse]
       if (isValid) {
         this.deleteNodes(this.deletedNodes)
-        this._bot.botData = {...this.botData}
+        this._bot.botData = { ...this.botData }
         this._bot.setBotData(this.botData)
         this.closeEvent.emit()
       }
