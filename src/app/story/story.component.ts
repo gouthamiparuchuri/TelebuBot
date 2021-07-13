@@ -74,17 +74,13 @@ export class StoryComponent implements OnInit {
     }
     let type;
     let title = node.title
-    if(node.type == 'text'){
+    if(node.type == 'text' || node.type == 'connect'){
       type = 'response'
       title = 'utter_' + node.parentNode
     }else if(node.type == 'response')
       type = 'intent'
     else if(node.type == 'intent')
       type = node.type
-    else if(node.type == 'connect'){
-      type = 'response'
-      title = 'utter_connect'
-    }
     if(type == 'intent' && node.id != 1){
       title = title + '{"group":"' + node.label + '"}'
     }
