@@ -118,6 +118,7 @@ export class StoryComponent implements OnInit {
     if (confirm('Creating a new BOT deletes existing BOT. Are you sure to create new one?')) {
       this._bot.botData = sampleBot
       this._bot.botData._id = this._bot.botId
+      this._bot.botData.name = this._bot.botId
       this._bot.setBotData(this._bot.botData)
     }
   }
