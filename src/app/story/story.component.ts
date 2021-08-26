@@ -116,10 +116,11 @@ export class StoryComponent implements OnInit {
   }
   newBot(): void {
     if (confirm('Creating a new BOT deletes existing BOT. Are you sure to create new one?')) {
-      this._bot.botData = sampleBot
+      let bot = JSON.stringify(sampleBot)
+      this._bot.botData = JSON.parse(bot)
       this._bot.botData._id = this._bot.botId
       this._bot.botData.name = this._bot.botId
-      this._bot.setBotData(this._bot.botData)
+      this._bot.setBotData({...this._bot.botData})
     }
   }
   ngOnDestroy(): void {

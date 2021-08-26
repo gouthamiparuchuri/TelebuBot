@@ -26,9 +26,11 @@ export class IntentComponent implements OnInit {
   nextNodeChange: boolean;
   botData: any;
   nextConnect: string;
+  nluKeys: string[];
   constructor(private _bot: BotService, private _toastr: ToastrService) { }
 
   ngOnChanges(): void {
+    this.nluKeys = []
     this.botData = { ...this._bot.botData }
     this.node = { ...this.storyNode }
     this.nextNodeChange = false;
@@ -48,6 +50,7 @@ export class IntentComponent implements OnInit {
     this.nextConnect = ''
     if (this.type != 'text') {
       this.botData.nlu.forEach((nlu, index) => {
+        this.nluKeys.push(Object.keys(nlu)[0])
         if (Object.keys(nlu)[0] == this.node.title) {
           this.nluIndex = index;
           if (this.type == 'intent') {
@@ -56,7 +59,8 @@ export class IntentComponent implements OnInit {
           }
         }
       })
-    }
+    }else
+      this.botData.nlu.forEach(nlu => this.nluKeys.push(Object.keys(nlu)[0]));
     if (this.nodeType == 'response')
       this.nextResponse = { ...this.botData.domain.responses['utter_' + this.node.id][0] }
     else if (this.nodeType == 'intent')
@@ -124,8 +128,10 @@ export class IntentComponent implements OnInit {
       let node = this.botData.story[nodeId]
       if (node.type != 'text' && node.type != 'connect') {
         this.botData.nlu.forEach((nlu, index) => {
-          if (Object.keys(nlu)[0] == node.title)
+          if (Object.keys(nlu)[0] == node.title){
             this.botData.nlu.splice(index, 1);
+            this.nluKeys.splice(index, 1)
+          }
         })
         this.botData.domain.intents.splice(this.botData.domain.intents.indexOf(node.title), 1);
       }
@@ -177,10 +183,15 @@ export class IntentComponent implements OnInit {
       let isValid: boolean = true;
       if (this.node.type != 'text') {
         this.botData.nlu.splice(this.nluIndex, 1)
+        this.nluKeys.splice(this.nluIndex, 1)
         let nlu = this.node.type == 'intent' ? this.nlu : [this.nodeLabel]
-        this.botData.nlu.push({ [title]: nlu })
+        if(this.nluKeys.indexOf(title) == -1){
+          this.botData.nlu.push({ [title]: nlu })
+          this.nluKeys.push(title)
+        }
         this.botData.domain.intents.splice(this.botData.domain.intents.indexOf(this.node.title), 1);
-        this.botData.domain.intents.push(title)
+        if(this.botData.domain.intents.indexOf(title) == -1)
+          this.botData.domain.intents.push(title)
       }
       if (this.node.type == 'response') {
         this.botData.domain.responses['utter_' + this.node.parentNode][0].buttons.forEach((button, index) => {
@@ -210,8 +221,12 @@ export class IntentComponent implements OnInit {
               "target": [],
               "parentNode": this.node.id
             }
-            this.botData.nlu.push({ [title]: [this.nextIntent] })
-            this.botData.domain.intents.push(title)
+            if(this.nluKeys.indexOf(title) == -1){
+              this.botData.nlu.push({ [title]: [this.nextIntent] })
+              this.nluKeys.push(title)
+            }
+            if(this.botData.domain.intents.indexOf(title) == -1)
+              this.botData.domain.intents.push(title)
             this.botData.story[this.node.id].target.push(id)
           } else {
             isValid = false
@@ -243,8 +258,12 @@ export class IntentComponent implements OnInit {
                 }
                 this.nextResponse.buttons[index].payload = '/' + title + '{\"group\":\"' + button.title + '\"}'
                 this.nextResponse.buttons[index].id = id
-                this.botData.nlu.push({ [title]: [button.title] })
-                this.botData.domain.intents.push(title)
+                if(this.nluKeys.indexOf(title) == -1){
+                  this.nluKeys.push(title)
+                  this.botData.nlu.push({ [title]: [button.title] })
+                }
+                if(this.botData.domain.intents.indexOf(title) == -1)
+                  this.botData.domain.intents.push(title)
                 this.botData.story[this.node.id].target.push(id)
               } else {
                 isNew = false
