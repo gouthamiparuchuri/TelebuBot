@@ -16,7 +16,7 @@ export const sampleBot = {
             "title": "start",
             "type": "intent",
             "id": 1,
-            "target": [2, 3],
+            "target": [],
             "parentNode": 0
         }
     },
